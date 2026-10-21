@@ -1,4 +1,4 @@
-# 👑 CRAZY FASHION — Luxury Streetwear Shopping Website
+#  CRAZY FASHION — Luxury Streetwear Shopping Website
 
 [![GitHub Pages Deployment](https://img.shields.io/badge/Deployed%20with-GitHub%20Pages-blue?logo=github&style=flat-square)](https://crazygopi46.github.io/Shopping_website/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
