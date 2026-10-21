@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRAZY FASHION — Where Premium Meets Affordable</title>
+  <meta name="description" content="Discover premium shirts, streetwear t-shirts, and tailored denim jeans at Crazy Fashion. Enjoy exclusive offers and fast delivery.">
+  
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Font Awesome Icons (Free 6.5.1) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Top Announcement Bar -->
+  <div class="top-bar">
+    <div class="top-bar-marquee">
+      <span class="highlight">LIMITED OFFER</span>
+      <span>USE CODE <strong>CRAZY50</strong> FOR 50% OFF ON ALL ORDERS | FREE SHIPPING OVER ₹999</span>
+      <a href="#ComingSoon" class="top-bar-timer-link" title="View Next Drop Countdown">
+        <i class="fa-solid fa-hourglass-half"></i> NEXT DROP IN: <span class="top-timer-val" id="top-timer-clock">04d 18h 45m 30s</span>
+      </a>
+    </div>
+    <div class="top-bar-links">
+      <a href="coming-soon.html"><i class="fa-solid fa-fire"></i> Drop Teaser</a>
+      <a href="#Contact"><i class="fa-solid fa-headset"></i> Support</a>
+      <a href="#About"><i class="fa-solid fa-gem"></i> Quality Guarantee</a>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="header-wrapper">
+    <div class="sitename">
+      <a href="index.html" class="brand-logo" id="brand-logo-link">
+        <i class="fa-solid fa-crown"></i>
+        <div>
+          <h1>CRAZY FASHION</h1>
+          <span>Luxury Streetwear</span>
+        </div>
+      </a>
+
+      <!-- Search Input with Category Selector and Live Categories List -->
+      <div class="search-container" id="search-container">
+        <div class="search-input-wrap">
+          <div class="search-category-wrapper">
+            <select id="search-category-select" class="search-category-select" aria-label="Filter Search by Category">
+              <option value="all">All</option>
+              <option value="shirts">Shirts</option>
+              <option value="jeans">Jeans</option>
+              <option value="tshirts">T-Shirts</option>
+            </select>
+            <i class="fa-solid fa-chevron-down search-cat-arrow"></i>
+          </div>
+          <span class="search-divider"></span>
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="search" id="search-input" placeholder="Search shirts, jeans, luxury..." autocomplete="off">
+          <button class="search-clear-btn" id="search-clear-btn" aria-label="Clear Search">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- Live Categories & Search Suggestions Dropdown -->
+        <div class="search-dropdown" id="search-dropdown">
+          <div class="search-dropdown-section">
+            <div class="search-dropdown-header">
+              <span><i class="fa-solid fa-layer-group"></i> Browse Categories</span>
+            </div>
+            <div class="search-categories-list" id="search-categories-list">
+              <button type="button" class="search-cat-item active" data-category="all">
+                <i class="fa-solid fa-border-all"></i> All Collections <span class="cat-count" id="count-all">(12)</span>
+              </button>
+              <button type="button" class="search-cat-item" data-category="shirts">
+                <i class="fa-solid fa-shirt"></i> Artisanal Shirts <span class="cat-count" id="count-shirts">(7)</span>
+              </button>
+              <button type="button" class="search-cat-item" data-category="jeans">
+                <i class="fa-solid fa-vest-patches"></i> Denim & Jeans <span class="cat-count" id="count-jeans">(3)</span>
+              </button>
+              <button type="button" class="search-cat-item" data-category="tshirts">
+                <i class="fa-solid fa-tshirt"></i> Premium Tees <span class="cat-count" id="count-tshirts">(1)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="search-dropdown-section" id="search-results-section" style="display: none;">
+            <div class="search-dropdown-header">
+              <span><i class="fa-solid fa-magnifying-glass"></i> Live Matches</span>
+              <span id="search-results-count" style="font-size: 0.72rem; color: var(--accent-light);"></span>
+            </div>
+            <div class="search-results-list" id="search-results-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="navigation">
+        <a href="#Home" class="active">HOME</a>
+        <a href="#Products">COLLECTIONS</a>
+        <a href="categories.html">CATEGORIES</a>
+        <a href="#ComingSoon" class="nav-drop-link">COMING SOON <span class="nav-pulse-badge">DROP</span></a>
+        <a href="#About">ABOUT</a>
+        <a href="#Contact">CONTACT</a>
+      </nav>
+
+      <!-- Action Buttons (Wishlist & Cart) -->
+      <div class="header-actions">
+        <button class="action-btn" id="wishlist-toggle-btn" title="View Wishlist" aria-label="View Wishlist">
+          <i class="fa-regular fa-heart"></i>
+          <span class="action-badge" id="wishlist-count-badge">0</span>
+        </button>
+
+        <button class="action-btn" id="cart-toggle-btn" title="View Cart" aria-label="View Shopping Cart">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="action-badge" id="cart-count-badge">0</span>
+        </button>
+
+        <button class="action-btn mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle Navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="hero-wrapper" id="Home">
+      <div class="hero-content">
+        <div class="hero-text-side">
+          <div class="hero-tag">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> New Season Collection 2026
+          </div>
+          <h2 class="hero-title">
+            STYLE <span>YOUR WAY</span>
+          </h2>
+          <p class="hero-subtitle">
+            Where premium meets affordable. Explore artisanal printed shirts, architectural wide-leg denim, and heavy-gauge streetwear tees crafted for modern living.
+          </p>
+
+          <div class="hero-btns">
+            <a href="#Products" class="btn-primary">
+              <i class="fa-solid fa-fire"></i> Explore Shop
+            </a>
+            <a href="#About" class="btn-outline">
+              <i class="fa-solid fa-play"></i> Brand Story
+            </a>
+          </div>
+
+          <!-- Hero Stats Strip -->
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <h4>15K+</h4>
+              <p>Happy Stylists</p>
+            </div>
+            <div class="hero-stat">
+              <h4>4.9 ★</h4>
+              <p>Quality Rating</p>
+            </div>
+            <div class="hero-stat">
+              <h4>100%</h4>
+              <p>Pure Cotton</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Showcase Image (Pure Image, No Box Frame) -->
+        <div class="hero-visual">
+          <img src="assets/files/New Arrivals.jpeg" alt="Crazy Fashion New Arrivals" class="hero-clean-img" id="hero-showcase-img">
+        </div>
+      </div>
+    </section>
+
+    <!-- Value Props / Features Strip -->
+    <section class="features-strip">
+      <div class="features-container">
+        <div class="feature-box">
+          <div class="feature-icon"><i class="fa-solid fa-truck-fast"></i></div>
+          <div class="feature-text">
+            <h4>Free Shipping</h4>
+            <p>On orders above ₹999 across India</p>
+          </div>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <div class="feature-text">
+            <h4>100% Secure Checkout</h4>
+            <p>Cards, UPI, Net Banking & COD</p>
+          </div>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon"><i class="fa-solid fa-arrow-rotate-left"></i></div>
+          <div class="feature-text">
+            <h4>30-Day Free Return</h4>
+            <p>Hassle-free size exchange policy</p>
+          </div>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon"><i class="fa-solid fa-headset"></i></div>
+          <div class="feature-text">
+            <h4>24/7 Styling Concierge</h4>
+            <p>Dedicated personal support</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Products Store Section -->
+    <section class="main-store-section" id="Products">
+      <div class="section-header">
+        <span class="section-subtitle">Discover Your Signature Aesthetic</span>
+        <h2 class="section-title">FEATURED COLLECTIONS</h2>
+        <div class="section-header-line"></div>
+      </div>
+
+      <!-- Filter Toolbar -->
+      <div class="filter-toolbar">
+        <div class="category-pills">
+          <button class="pill-btn active" data-category="all">All Items</button>
+          <button class="pill-btn" data-category="shirts">Shirts</button>
+          <button class="pill-btn" data-category="jeans">Denim & Trousers</button>
+          <button class="pill-btn" data-category="tshirts">T-Shirts</button>
+        </div>
+
+        <div class="sort-container">
+          <label for="sort-select" class="sort-label"><i class="fa-solid fa-arrow-down-short-wide"></i> Sort By:</label>
+          <select id="sort-select" class="sort-select">
+            <option value="featured">Featured First</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating">Top Customer Rated</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Dynamic Products Grid -->
+      <div class="products-grid" id="products-grid">
+        <!-- Rendered dynamically by script.js -->
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         COMING SOON / NEXT DROP COUNTDOWN SECTION
+         ========================================================================== -->
+    <section class="coming-soon-section" id="ComingSoon">
+      <!-- Ambient Visual Lighting Glows -->
+      <div class="cs-ambient-glow-1"></div>
+      <div class="cs-ambient-glow-2"></div>
+
+      <div class="coming-soon-container">
+        <!-- Section Header -->
+        <div class="cs-header">
+          <div class="cs-badge-pill">
+            <i class="fa-solid fa-sparkles"></i> EXCLUSIVE VAULT PREVIEW • LIMITED 100 PIECES
+          </div>
+          <h2 class="cs-title">NEXT STREETWEAR DROP: 2026</h2>
+          <p class="cs-subtitle">
+            Couture-grade streetwear silhouettes engineered with Japanese raw selvedge, Italian linen jacquards, and custom heavyweight wool. The vault unlocks exclusively in:
+          </p>
+        </div>
+
+        <!-- Master Countdown Display Board -->
+        <div class="cs-countdown-board">
+          <div class="cs-countdown-status-bar">
+            <div class="cs-live-beacon">
+              <span class="cs-pulse-dot"></span>
+              <span>LIVE COUNTDOWN ACTIVE</span>
+            </div>
+            <div class="cs-launch-date-tag">
+              <i class="fa-regular fa-calendar-days"></i> Launch Date: <strong id="cs-target-date-display">OCTOBER 24, 2026 • 12:00 PM IST</strong>
+            </div>
+          </div>
+
+          <!-- 4 Countdown Cards Grid -->
+          <div class="countdown-grid" id="main-countdown-clock">
+            <div class="countdown-box">
+              <span class="countdown-num" id="timer-days">04</span>
+              <span class="countdown-label">Days</span>
+            </div>
+            <div class="countdown-box">
+              <span class="countdown-num" id="timer-hours">18</span>
+              <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-box">
+              <span class="countdown-num" id="timer-minutes">45</span>
+              <span class="countdown-label">Minutes</span>
+            </div>
+            <div class="countdown-box">
+              <span class="countdown-num" id="timer-seconds">30</span>
+              <span class="countdown-label">Seconds</span>
+            </div>
+          </div>
+
+          <!-- Vault Allocation Progress -->
+          <div class="cs-allocation-wrap">
+            <div class="cs-allocation-header">
+              <span><i class="fa-solid fa-lock-open"></i> VIP Priority Allocation Status</span>
+              <span><strong style="color: var(--accent-light);">86% Reserved</strong> (14 Spots Left)</span>
+            </div>
+            <div class="cs-allocation-bar">
+              <div class="cs-allocation-fill"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upcoming Drop Products Teasers -->
+        <div class="cs-products-section">
+          <div class="cs-products-title-bar">
+            <div>
+              <h3><i class="fa-solid fa-eye"></i> SNEAK PEEK: THE CAPSULE DROP</h3>
+              <p>Explore the 3 exclusive collector pieces dropping in this collection.</p>
+            </div>
+            <a href="coming-soon.html" class="btn-outline" style="border-color: rgba(212, 175, 55, 0.4); color: var(--accent-light); padding: 8px 18px; font-size: 0.82rem;">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Full Drop Lookbook
+            </a>
+          </div>
+
+          <div class="drop-grid">
+            <!-- Drop Item 1: Luxury Varsity Jacket -->
+            <article class="drop-card">
+              <div class="drop-img-box">
+                <img src="assets/files/drop-jacket.jpeg" alt="Crazy Fashion Luxury Streetwear Varsity Jacket" loading="lazy">
+                <span class="drop-badge-soon"><i class="fa-solid fa-hourglass-start"></i> COMING SOON</span>
+                <span class="drop-limited-badge">100 PIECES ONLY</span>
+              </div>
+              <div class="drop-card-body">
+                <span class="drop-card-category">Luxury Outerwear</span>
+                <h4 class="drop-card-title">Crazy Fashion Wool & Leather Varsity Jacket</h4>
+                <p class="drop-card-desc">
+                  Heavyweight maroon wool body paired with handcrafted off-white leather sleeves, custom chenille 'CF' crest, brass snap buttons, and striped athletic ribbing.
+                </p>
+                <div class="drop-specs-list">
+                  <span class="drop-spec-chip"><i class="fa-solid fa-gem"></i> Heavy Wool</span>
+                  <span class="drop-spec-chip"><i class="fa-solid fa-shield"></i> Cowhide Leather</span>
+                  <span class="drop-spec-chip"><i class="fa-solid fa-fingerprint"></i> Serial Tagged</span>
+                </div>
+                <div class="drop-card-footer">
+                  <div class="drop-price-box">
+                    <span class="drop-price-tag">Drop Price</span>
+                    <div class="drop-price">₹1,499 <span class="drop-mrp">₹2,499</span></div>
+                  </div>
+                  <button class="btn-drop-notify" data-drop-item="CF Wool & Leather Varsity Jacket" data-drop-price="₹1,499" onclick="openDropModal('CF Wool & Leather Varsity Jacket', '₹1,499')">
+                    <i class="fa-solid fa-bell"></i> Notify Me
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <!-- Drop Item 2: Tokyo Monogram Resort Shirt -->
+            <article class="drop-card">
+              <div class="drop-img-box">
+                <img src="assets/files/drop-shirt.jpeg" alt="Tokyo Monogram Silk-Cotton Resort Shirt" loading="lazy">
+                <span class="drop-badge-soon"><i class="fa-solid fa-hourglass-start"></i> COMING SOON</span>
+                <span class="drop-limited-badge">150 PIECES ONLY</span>
+              </div>
+              <div class="drop-card-body">
+                <span class="drop-card-category">Artisanal Shirts</span>
+                <h4 class="drop-card-title">Tokyo Monogram Silk-Cotton Cuban Shirt</h4>
+                <p class="drop-card-desc">
+                  Ultra-luxurious silk-cotton blend with subtle geometric monogram jacquard weave. Relaxed Cuban camp-collar with iridescent mother-of-pearl buttons.
+                </p>
+                <div class="drop-specs-list">
+                  <span class="drop-spec-chip"><i class="fa-solid fa-feather"></i> Silk & Cotton</span>
+                  <span class="drop-spec-chip"><i class="fa-solid fa-sun"></i> Cuban Collar</span>
+                  <span class="drop-spec-chip"><i class="fa-solid fa-certificate"></i> Mother of Pearl</span>
+                </div>
+                <div class="drop-card-footer">
+                  <div class="drop-price-box">
+                    <span class="drop-price-tag">Drop Price</span>
+                    <div class="drop-price">₹899 <span class="drop-mrp">₹1,299</span></div>
+                  </div>
+                  <button class="btn-drop-notify" data-drop-item="Tokyo Monogram Silk-Cotton Shirt" data-drop-price="₹899" onclick="openDropModal('Tokyo Monogram Silk-Cotton Shirt', '₹899')">
+                    <i class="fa-solid fa-bell"></i> Notify Me
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <!-- Drop Item 3: Japanese Raw Selvedge Denim -->
+            <article class="drop-card">
+              <div class="drop-img-box">
+                <img src="assets/files/drop-denim.jpeg" alt="Japanese Raw Selvedge Wide-Leg Denim" loading="lazy">
+                <span class="drop-badge-soon"><i class="fa-solid fa-hourglass-start"></i> COMING SOON</span>
+                <span class="drop-limited-badge">120 PIECES ONLY</span>
+              </div>
+              <div class="drop-card-body">
+                <span class="drop-card-category">Denim & Trousers</span>
+                <h4 class="drop-card-title">Japanese Raw Selvedge Wide-Leg Denim</h4>
+                <p class="drop-card-desc">
+                  Authentic 14.5oz shuttle-loom Japanese selvedge denim in deep indigo. Features contrast copper topstitching, custom debossed leather patch, and wide architectural drape.
+                </p>
+                <div class="drop-specs-list">
+                  <span class="drop-spec-chip"><i class="fa-solid fa-award"></i> 14.5oz Loomstate</span>
+                  <span class="drop-spec-chip"><i class="fa-solid fa-scissors"></i> Red-Line ID</span>
+                  <span class="drop-spec-chip"><i class="fa-solid fa-bolt"></i> Copper Rivets</span>
+                </div>
+                <div class="drop-card-footer">
+                  <div class="drop-price-box">
+                    <span class="drop-price-tag">Drop Price</span>
+                    <div class="drop-price">₹1,299 <span class="drop-mrp">₹1,999</span></div>
+                  </div>
+                  <button class="btn-drop-notify" data-drop-item="Japanese Raw Selvedge Wide Denim" data-drop-price="₹1,299" onclick="openDropModal('Japanese Raw Selvedge Wide Denim', '₹1,299')">
+                    <i class="fa-solid fa-bell"></i> Notify Me
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- VIP Drop Quick-Register Banner -->
+          <div class="cs-waitlist-banner">
+            <div class="cs-waitlist-text">
+              <h4><i class="fa-solid fa-key" style="color: var(--accent-light);"></i> JOIN THE VIP VAULT LIST</h4>
+              <p>Be the first to access the drop 15 minutes before public release + get an instant 10% secret drop code.</p>
+            </div>
+            <form class="cs-waitlist-form" id="cs-quick-waitlist-form" onsubmit="handleQuickWaitlist(event)">
+              <input type="email" class="cs-waitlist-input" id="quick-waitlist-email" placeholder="Enter your email address..." required>
+              <button type="submit" class="btn-join-drop">
+                <i class="fa-solid fa-bolt"></i> Get Early Access
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cinematic Lookbook Video Campaign -->
+    <section class="lookbook-section" id="Lookbook">
+      <div class="section-header">
+        <span class="section-subtitle">2026 Cinematic Streetwear Drop</span>
+        <h2 class="section-title">CRAZY FASHION MOTION LOOKBOOK</h2>
+        <div class="section-header-line"></div>
+      </div>
+      <div class="video-container-wrap">
+        <div class="video-card-glass">
+          <span class="video-overlay-badge"><i class="fa-solid fa-clapperboard"></i> 2026 Collection Motion Campaign</span>
+          
+          <!-- Autoplay Video with NO native browser UI controls -->
+          <video class="campaign-video" id="lookbook-video" autoplay muted loop playsinline poster="assets/files/group shirt.jpeg" preload="auto">
+            <source src="ads.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+
+
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="About">
+      <div class="about-container">
+        <div class="about-img-wrap">
+          <img src="assets/files/group shirt.jpeg" alt="Crazy Fashion Tailoring Craft" class="about-main-img">
+          <div class="about-badge-floating">
+            <h4>100%</h4>
+            <p>Artisanal Cotton</p>
+          </div>
+        </div>
+
+        <div class="about-text">
+          <span class="section-subtitle">Our Heritage & Promise</span>
+          <h2>WHERE LUXURY MEETS ACCESSIBILITY</h2>
+          <p>
+            Founded on the belief that high fashion shouldn't come with exorbitant markups, CRAZY FASHION creates thoughtful wardrobe essentials with couture-level attention to detail.
+          </p>
+          <p>
+            From the hand-selected yarn of our Cuban-collar shirts to the heavy-gauge weave of our streetwear denims, every stitch is engineered to deliver comfort, confidence, and enduring longevity.
+          </p>
+
+          <div class="about-perks">
+            <div class="about-perk-item"><i class="fa-solid fa-circle-check"></i> Sustainable Fabric Sourcing</div>
+            <div class="about-perk-item"><i class="fa-solid fa-circle-check"></i> Anti-Shrink & Pre-Washed</div>
+            <div class="about-perk-item"><i class="fa-solid fa-circle-check"></i> Modern Ergonomic Cuts</div>
+            <div class="about-perk-item"><i class="fa-solid fa-circle-check"></i> Seamless Returns & Swaps</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Customer Reviews Section -->
+    <section class="reviews-section">
+      <div class="section-header">
+        <span class="section-subtitle">Loved by Over 15,000 Stylists</span>
+        <h2 class="section-title">WHAT OUR CUSTOMERS SAY</h2>
+        <div class="section-header-line"></div>
+      </div>
+
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="review-text">
+            "The Brown Waves Shirt exceeded all my expectations! The fabric feels lightweight and exceptionally premium. Perfect for dinner dates."
+          </p>
+          <div class="reviewer-meta">
+            <div class="reviewer-avatar">RK</div>
+            <div class="reviewer-info">
+              <h5>Rohit Kumar</h5>
+              <span><i class="fa-solid fa-circle-check"></i> Verified Buyer</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="review-text">
+            "Best wide denim jeans I've bought in years. The Arctic Blue wash matches everything, and the drape over my sneakers is incredible."
+          </p>
+          <div class="reviewer-meta">
+            <div class="reviewer-avatar">AS</div>
+            <div class="reviewer-info">
+              <h5>Aakash Sharma</h5>
+              <span><i class="fa-solid fa-circle-check"></i> Verified Buyer</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="review-text">
+            "Used code CRAZY50 and got 50% off! Fast 2-day delivery and great packaging. Crazy Fashion is definitely my new go-to brand."
+          </p>
+          <div class="reviewer-meta">
+            <div class="reviewer-avatar">PS</div>
+            <div class="reviewer-info">
+              <h5>Priya Sundaram</h5>
+              <span><i class="fa-solid fa-circle-check"></i> Verified Buyer</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact & Concierge Form -->
+    <section class="contact-section" id="Contact">
+      <div class="contact-container">
+        <div class="contact-info">
+          <h2>GET IN TOUCH WITH CRAZY FASHION</h2>
+          <p>
+            Have questions regarding sizing, custom fittings, or bulk orders? Connect with our personal fashion stylists today.
+          </p>
+
+          <div class="contact-details-list">
+            <div class="contact-detail-row">
+              <i class="fa-solid fa-location-dot"></i>
+              <span>Fashion Boulevard, Suite 104, Design District</span>
+            </div>
+            <div class="contact-detail-row">
+              <i class="fa-solid fa-phone"></i>
+              <span>+91 98765 43210 / 1800-CRAZY-FASHION</span>
+            </div>
+            <div class="contact-detail-row">
+              <i class="fa-solid fa-envelope"></i>
+              <span>concierge@crazyfashion.com</span>
+            </div>
+            <div class="contact-detail-row">
+              <i class="fa-solid fa-clock"></i>
+              <span>Monday – Sunday: 9:00 AM – 9:00 PM IST</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form-card">
+          <h3>Personal Concierge</h3>
+          <p>Drop your inquiry and get a response within 2 hours.</p>
+
+          <form id="contact-form">
+            <div class="form-group">
+              <label class="form-label" for="contact-name">Full Name</label>
+              <input type="text" id="contact-name" class="form-control" placeholder="e.g. John Doe" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contact-phone">Contact Number</label>
+              <input type="tel" id="contact-phone" class="form-control" placeholder="e.g. +91 98765 43210" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contact-message">Message or Size Query</label>
+              <textarea id="contact-message" class="form-control" rows="3" placeholder="Tell us how we can help you style..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+              <i class="fa-solid fa-paper-plane"></i> Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-col">
+        <h4>CRAZY FASHION</h4>
+        <p style="font-size: 0.88rem; line-height: 1.7; margin-bottom: 16px;">
+          Where premium aesthetics meet everyday accessibility. Redefining modern apparel with timeless craftsmanship and comfort.
+        </p>
+        <div class="footer-socials">
+          <a href="#" class="footer-social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="footer-social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="footer-social-btn" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" class="footer-social-btn" aria-label="Pinterest"><i class="fa-brands fa-pinterest"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>COLLECTIONS</h4>
+        <ul>
+          <li><a href="categories.html">Artisanal Shirts</a></li>
+          <li><a href="Nextpage.html">Wide Denim Jeans</a></li>
+          <li><a href="#Products">Streetwear T-Shirts</a></li>
+          <li><a href="#Products">Autumn Overshirts</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>CUSTOMER CARE</h4>
+        <ul>
+          <li><a href="#Contact">Track Order</a></li>
+          <li><a href="#Contact">Exchange & Returns</a></li>
+          <li><a href="#Contact">Size Guide</a></li>
+          <li><a href="#Contact">FAQs & Support</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>PROMO CODES</h4>
+        <p style="font-size: 0.82rem; margin-bottom: 10px;">Apply at checkout:</p>
+        <p><strong style="color: var(--accent-light);">CRAZY50</strong> — Flat 50% Off</p>
+        <p><strong style="color: var(--accent-light);">WELCOME10</strong> — Flat 10% Off</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 CRAZY FASHION Ltd. All rights reserved. Where Premium Meets Affordable.</p>
+      <div class="payment-badges-row">
+        <i class="fa-brands fa-cc-visa" title="Visa"></i>
+        <i class="fa-brands fa-cc-mastercard" title="Mastercard"></i>
+        <i class="fa-brands fa-google-pay" title="Google Pay"></i>
+        <i class="fa-brands fa-apple-pay" title="Apple Pay"></i>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       CART SLIDE-OUT DRAWER & BACKDROP
+       ========================================================================== -->
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="drawer-header">
+      <h3><i class="fa-solid fa-bag-shopping"></i> Your Shopping Bag</h3>
+      <button class="drawer-close-btn" id="cart-close-btn" aria-label="Close Cart">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="drawer-body">
+      <div id="cart-items-container">
+        <!-- Rendered by script.js -->
+      </div>
+
+      <div class="cart-empty-view" id="cart-empty-view">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <h4>Your Shopping Bag is Empty</h4>
+        <p>Explore our latest shirts, jeans, and t-shirts to fill it up.</p>
+        <button class="btn-primary" onclick="closeCartDrawer(); document.getElementById('Products').scrollIntoView({behavior: 'smooth'})">
+          Start Shopping
+        </button>
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <div class="coupon-section">
+        <input type="text" id="coupon-input" class="coupon-input" placeholder="PROMO CODE (e.g. CRAZY50)">
+        <button class="btn-coupon" id="apply-coupon-btn">Apply</button>
+      </div>
+
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <span id="cart-subtotal">₹0</span>
+      </div>
+
+      <div class="summary-row" id="cart-discount-row" style="display: none; color: var(--success);">
+        <span>Special Discount</span>
+        <span id="cart-discount">-₹0</span>
+      </div>
+
+      <div class="summary-row">
+        <span>Estimated Delivery</span>
+        <span id="cart-shipping">FREE</span>
+      </div>
+
+      <div class="summary-row total-row">
+        <span>Grand Total</span>
+        <span id="cart-total">₹0</span>
+      </div>
+
+      <button class="btn-checkout-flow" id="checkout-drawer-btn">
+        <i class="fa-solid fa-lock"></i> Proceed to Checkout
+      </button>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+       CHECKOUT & TRANSACTION MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="checkout-modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-shield-halved"></i> SECURE TRANSACTION</h3>
+        <button class="modal-close-btn" id="checkout-close-btn" aria-label="Close Modal">&times;</button>
+      </div>
+
+      <!-- Checkout Form View -->
+      <div id="checkout-form-view">
+        <div class="checkout-steps">
+          <div class="step-item active"><span class="step-num">1</span> Delivery Details</div>
+          <div class="step-item active"><span class="step-num">2</span> Payment Option</div>
+          <div class="step-item active"><span class="step-num">3</span> Confirmation</div>
+        </div>
+
+        <form id="checkout-form" class="modal-body">
+          <div class="form-group-row">
+            <div>
+              <label class="form-label" for="checkout-name">Recipient Name *</label>
+              <input type="text" id="checkout-name" class="form-control" placeholder="Full name" required>
+            </div>
+            <div>
+              <label class="form-label" for="checkout-phone">Phone Number *</label>
+              <input type="tel" id="checkout-phone" class="form-control" placeholder="+91 98765 43210" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="checkout-address">Delivery Address *</label>
+            <input type="text" id="checkout-address" class="form-control" placeholder="Flat, Street, Area" required>
+          </div>
+
+          <div class="form-group-row">
+            <div>
+              <label class="form-label" for="checkout-city">City *</label>
+              <input type="text" id="checkout-city" class="form-control" placeholder="City" value="Chennai" required>
+            </div>
+            <div>
+              <label class="form-label" for="checkout-pin">PIN Code *</label>
+              <input type="text" id="checkout-pin" class="form-control" placeholder="600001" value="600001" required>
+            </div>
+          </div>
+
+          <!-- Payment Options -->
+          <label class="form-label">Select Payment Method</label>
+          <input type="hidden" id="selected-payment-method" value="card">
+          <div class="payment-methods-grid">
+            <div class="payment-card active" data-method="card">
+              <i class="fa-solid fa-credit-card"></i>
+              <span>Cards</span>
+            </div>
+            <div class="payment-card" data-method="upi">
+              <i class="fa-solid fa-mobile-screen-button"></i>
+              <span>UPI / QR</span>
+            </div>
+            <div class="payment-card" data-method="cod">
+              <i class="fa-solid fa-hand-holding-dollar"></i>
+              <span>Cash On Delivery</span>
+            </div>
+          </div>
+
+          <!-- Dynamic Payment Sub-fields -->
+          <div id="payment-card-fields" class="payment-subfields">
+            <div class="form-group">
+              <label class="form-label" for="card-number">Card Number</label>
+              <input type="text" id="card-number" class="form-control" placeholder="4532 •••• •••• 8821" maxlength="19" value="4532 8920 1192 8821">
+            </div>
+            <div class="form-group-row" style="margin-bottom: 0;">
+              <div>
+                <label class="form-label" for="card-expiry">Expiry</label>
+                <input type="text" id="card-expiry" class="form-control" placeholder="MM/YY" maxlength="5" value="09/28">
+              </div>
+              <div>
+                <label class="form-label" for="card-cvv">CVV</label>
+                <input type="password" id="card-cvv" class="form-control" placeholder="•••" maxlength="3" value="784">
+              </div>
+            </div>
+          </div>
+
+          <div id="payment-upi-fields" class="payment-subfields" style="display: none;">
+            <label class="form-label" for="upi-id">UPI ID / VPA</label>
+            <input type="text" id="upi-id" class="form-control" placeholder="username@okhdfcbank or 9876543210@paytm">
+            <div class="upi-qr-box">
+              <i class="fa-solid fa-qrcode upi-qr-icon"></i>
+              <div>
+                <strong style="font-size: 0.88rem; display: block;">Instant QR Verification</strong>
+                <span style="font-size: 0.78rem; color: var(--text-muted);">Scan & pay with GPay, PhonePe, or Paytm</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="payment-cod-fields" class="payment-subfields" style="display: none;">
+            <div class="cod-info-box">
+              <i class="fa-solid fa-circle-check"></i>
+              <div>
+                <strong>Cash on Delivery Available</strong>
+                <p style="font-size: 0.8rem; margin: 0;">Pay exact cash upon arrival at your doorstep. Verified delivery partner.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Checkout Summary -->
+          <div style="background: var(--bg-body); padding: 14px 18px; border-radius: var(--radius-sm); margin-bottom: 20px;">
+            <div class="summary-row"><span>Bag Subtotal:</span> <span id="checkout-subtotal">₹0</span></div>
+            <div class="summary-row total-row" style="margin-bottom: 0;">
+              <span>Amount to Pay:</span>
+              <span id="checkout-total">₹0</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-checkout-flow" id="submit-transaction-btn">
+            <i class="fa-solid fa-check"></i> Complete Transaction
+          </button>
+        </form>
+      </div>
+
+      <!-- Transaction Processing Screen -->
+      <div class="transaction-processing-screen" id="transaction-processing">
+        <div class="processing-radar"></div>
+        <h3 style="font-family: 'Cinzel', serif; font-size: 1.4rem; margin-bottom: 8px;">Processing Transaction...</h3>
+        <p style="color: var(--text-muted); font-size: 0.88rem;">Securing payment encryption and generating your invoice...</p>
+      </div>
+
+      <!-- Transaction Success Screen -->
+      <div class="transaction-success-screen" id="transaction-success">
+        <div class="success-check-badge">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <h3 style="font-family: 'Cinzel', serif; font-size: 1.6rem; color: #ffffff;">ORDER CONFIRMED!</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Thank you for shopping with CRAZY FASHION.</p>
+
+        <div class="receipt-box" id="receipt-details">
+          <!-- Populated by script.js -->
+        </div>
+
+        <div class="receipt-actions">
+          <button class="btn-receipt-print" onclick="window.print()">
+            <i class="fa-solid fa-print"></i> Print Invoice
+          </button>
+          <button class="btn-primary" style="justify-content: center;" onclick="closeCheckoutModal()">
+            Continue Shopping
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       QUICK VIEW MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="quick-view-modal">
+    <div id="quick-view-content">
+      <!-- Populated by script.js -->
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       WISHLIST MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="wishlist-modal">
+    <div class="wishlist-modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-heart" style="color: #e63946;"></i> My Saved Wishlist</h3>
+        <button class="modal-close-btn" id="wishlist-close-btn" aria-label="Close Wishlist">&times;</button>
+      </div>
+      <div class="wishlist-body" id="wishlist-container">
+        <!-- Populated by script.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       VIP DROP WAITLIST MODAL
+       ========================================================================== -->
+  <div class="drop-modal-overlay" id="drop-modal">
+    <div class="drop-modal-card">
+      <div class="drop-modal-header">
+        <h3><i class="fa-solid fa-key" style="color: var(--accent-light);"></i> VIP DROP PRE-REGISTRATION</h3>
+        <button class="drop-modal-close-btn" id="drop-modal-close-btn" onclick="closeDropModal()" aria-label="Close Drop Modal">&times;</button>
+      </div>
+      <div class="drop-modal-body">
+        <div class="drop-target-item-preview">
+          <div class="drop-target-icon"><i class="fa-solid fa-gift"></i></div>
+          <div class="drop-target-info">
+            <h5 id="drop-modal-item-title">CF Wool & Leather Varsity Jacket</h5>
+            <span id="drop-modal-item-price">Drop Price: ₹1,499 • Vault Launch Oct 24</span>
+          </div>
+        </div>
+
+        <form id="drop-waitlist-form" onsubmit="handleDropWaitlistSubmit(event)">
+          <div class="drop-form-group">
+            <label class="drop-form-label" for="drop-input-name">Your Full Name</label>
+            <input type="text" id="drop-input-name" class="drop-form-control" placeholder="e.g. Rahul Verma" required>
+          </div>
+          <div class="drop-form-group">
+            <label class="drop-form-label" for="drop-input-email">Email Address (for 15-Min Early Link)</label>
+            <input type="email" id="drop-input-email" class="drop-form-control" placeholder="name@example.com" required>
+          </div>
+          <div class="drop-form-group">
+            <label class="drop-form-label" for="drop-input-phone">WhatsApp / Mobile Number (Optional SMS Ping)</label>
+            <input type="tel" id="drop-input-phone" class="drop-form-control" placeholder="+91 98765 43210">
+          </div>
+
+          <div class="drop-perks-box">
+            <i class="fa-solid fa-certificate"></i>
+            <span>Includes <strong>SECRET10</strong> promo code for 10% off at drop launch!</span>
+          </div>
+
+          <button type="submit" class="btn-drop-submit">
+            <i class="fa-solid fa-check"></i> Secure My VIP Early Spot
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Toast Notifications -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>

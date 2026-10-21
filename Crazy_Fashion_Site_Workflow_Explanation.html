@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CRAZY FASHION — Website Workflow & Technical Architecture Documentation</title>
+  <style>
+    /* ==========================================================================
+       PRINT & PAGE SETUP (A4 Exact Paging)
+       ========================================================================== */
+    @page {
+      size: A4 portrait;
+      margin: 12mm 13mm 12mm 13mm;
+      @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+        font-size: 7.5pt;
+        color: #71717a;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1f2937;
+      background: #ffffff;
+      line-height: 1.45;
+      font-size: 8.8pt;
+    }
+
+    /* Page Breaks */
+    .page {
+      page-break-after: always;
+      break-after: page;
+      height: 270mm;
+      max-height: 270mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .page-content {
+      flex: 1;
+    }
+
+    /* ==========================================================================
+       TYPOGRAPHY & PALETTE TOKENS
+       ========================================================================== */
+    :root {
+      --brand-primary: #722F37;       /* Royal Wine / Maroon */
+      --brand-primary-dark: #4e1d24;
+      --brand-gold: #c59b27;          /* Luxury Gold */
+      --brand-gold-light: #fef9e7;
+      --brand-dark: #121316;          /* Deep Carbon */
+      --surface-light: #f9fafb;
+      --surface-card: #ffffff;
+      --border-color: #e5e7eb;
+      --border-dark: #d1d5db;
+      --text-main: #1f2937;
+      --text-muted: #4b5563;
+      --text-light: #6b7280;
+      --accent-green: #059669;
+      --accent-blue: #2563eb;
+    }
+
+    h1, h2, h3, h4, h5 {
+      color: var(--brand-dark);
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    h1 { font-size: 20pt; }
+    h2 { font-size: 13pt; margin-bottom: 6pt; border-bottom: 2px solid var(--brand-gold); padding-bottom: 3pt; }
+    h3 { font-size: 10pt; margin-top: 8pt; margin-bottom: 3pt; color: var(--brand-primary); }
+    h4 { font-size: 9pt; margin-top: 5pt; margin-bottom: 2pt; }
+
+    p {
+      margin-bottom: 5pt;
+      color: var(--text-muted);
+      text-align: justify;
+    }
+
+    strong {
+      color: var(--brand-dark);
+    }
+
+    /* ==========================================================================
+       COVER PAGE
+       ========================================================================== */
+    .cover-container {
+      height: 270mm;
+      max-height: 270mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24mm 16mm 16mm 16mm;
+      background: linear-gradient(145deg, #18191d 0%, #121316 60%, #301419 100%);
+      color: #ffffff;
+      border-radius: 6px;
+    }
+
+    .cover-badge {
+      display: inline-block;
+      align-self: flex-start;
+      background: rgba(197, 155, 39, 0.2);
+      border: 1px solid var(--brand-gold);
+      color: #f3d47c;
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 3.5pt 10pt;
+      border-radius: 20px;
+      text-transform: uppercase;
+      margin-bottom: 12mm;
+    }
+
+    .cover-title-area h1 {
+      font-size: 25pt;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      font-weight: 800;
+      margin-bottom: 6pt;
+      line-height: 1.15;
+    }
+
+    .cover-title-area h1 span {
+      color: var(--brand-gold);
+      display: block;
+      font-size: 15pt;
+      font-weight: 500;
+      letter-spacing: 2px;
+      margin-top: 4pt;
+    }
+
+    .cover-subtitle {
+      font-size: 11pt;
+      color: #d1d5db;
+      max-width: 92%;
+      line-height: 1.5;
+      margin-top: 10pt;
+      text-align: left;
+    }
+
+    .cover-divider {
+      width: 70px;
+      height: 3.5px;
+      background: var(--brand-gold);
+      margin: 14pt 0;
+    }
+
+    .cover-feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9pt;
+      margin: 16pt 0;
+    }
+
+    .cover-feature-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 9pt;
+      border-radius: 5px;
+    }
+
+    .cover-feature-card h4 {
+      color: #f3d47c;
+      font-size: 8.5pt;
+      margin-top: 0;
+      margin-bottom: 3pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cover-feature-card p {
+      color: #9ca3af;
+      font-size: 7.8pt;
+      margin: 0;
+      text-align: left;
+      line-height: 1.4;
+    }
+
+    .cover-meta {
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 12pt;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 7.5pt;
+      color: #9ca3af;
+    }
+
+    .cover-meta strong {
+      color: #ffffff;
+    }
+
+    /* ==========================================================================
+       SECTION HEADERS & LAYOUT
+       ========================================================================== */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1.5pt solid var(--brand-primary);
+      padding-bottom: 3pt;
+      margin-bottom: 8pt;
+    }
+
+    .header-bar h2 {
+      border-bottom: none;
+      margin: 0;
+      padding: 0;
+      color: var(--brand-primary);
+      font-size: 12pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header-bar .section-num {
+      background: var(--brand-primary);
+      color: #ffffff;
+      font-size: 7.5pt;
+      font-weight: 700;
+      padding: 1.5pt 7pt;
+      border-radius: 10pt;
+    }
+
+    /* ==========================================================================
+       CARDS & CALLOUT BOXES
+       ========================================================================== */
+    .callout-box {
+      background: var(--surface-light);
+      border-left: 3pt solid var(--brand-primary);
+      padding: 6pt 9pt;
+      border-radius: 0 4pt 4pt 0;
+      margin: 6pt 0;
+    }
+
+    .callout-box.gold {
+      border-left-color: var(--brand-gold);
+      background: #fffdf5;
+    }
+
+    .callout-box.green {
+      border-left-color: var(--accent-green);
+      background: #f0fdf4;
+    }
+
+    .callout-box h4 {
+      margin-top: 0;
+      color: var(--brand-dark);
+      font-size: 8.5pt;
+    }
+
+    .callout-box p {
+      margin: 0;
+      font-size: 8pt;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8pt;
+      margin: 6pt 0;
+    }
+
+    .stat-card {
+      border: 1px solid var(--border-color);
+      border-radius: 5pt;
+      padding: 6pt;
+      background: #ffffff;
+      text-align: center;
+    }
+
+    .stat-card .stat-value {
+      font-size: 13pt;
+      font-weight: 800;
+      color: var(--brand-primary);
+      display: block;
+    }
+
+    .stat-card .stat-label {
+      font-size: 7pt;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 1pt;
+    }
+
+    /* ==========================================================================
+       FLOWCHARTS & PROCESS STEPS
+       ========================================================================== */
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 4.5pt;
+      margin: 6pt 0;
+    }
+
+    .flow-step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8pt;
+      padding: 5pt 8pt;
+      border: 1px solid var(--border-color);
+      border-radius: 5pt;
+      background: #ffffff;
+    }
+
+    .flow-step-num {
+      flex-shrink: 0;
+      width: 17pt;
+      height: 17pt;
+      background: var(--brand-primary);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 7.5pt;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .flow-step-num.gold { background: var(--brand-gold); }
+    .flow-step-num.green { background: var(--accent-green); }
+
+    .flow-step-content {
+      flex: 1;
+    }
+
+    .flow-step-content h4 {
+      margin: 0 0 1pt 0;
+      font-size: 8.5pt;
+      color: var(--brand-dark);
+    }
+
+    .flow-step-content p {
+      margin: 0;
+      font-size: 7.8pt;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .flow-step-badge {
+      display: inline-block;
+      font-size: 6.8pt;
+      font-weight: 600;
+      padding: 1pt 4pt;
+      border-radius: 3pt;
+      background: var(--surface-light);
+      border: 1px solid var(--border-dark);
+      margin-top: 2pt;
+      color: var(--text-muted);
+    }
+
+    /* Diagram Connectors Box */
+    .diagram-board {
+      background: #fafafb;
+      border: 1.2pt dashed var(--brand-gold);
+      border-radius: 5pt;
+      padding: 7pt;
+      margin: 6pt 0;
+    }
+
+    .diagram-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5pt;
+      margin-bottom: 4.5pt;
+    }
+
+    .diagram-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .diagram-node {
+      flex: 1;
+      background: #ffffff;
+      border: 1.2pt solid var(--border-color);
+      border-radius: 4pt;
+      padding: 4.5pt 6pt;
+      text-align: center;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    .diagram-node.active {
+      border-color: var(--brand-primary);
+      background: #fdf2f4;
+    }
+
+    .diagram-node.gold {
+      border-color: var(--brand-gold);
+      background: #fffdf5;
+    }
+
+    .diagram-node.green {
+      border-color: var(--accent-green);
+      background: #f0fdf4;
+    }
+
+    .diagram-node h5 {
+      font-size: 8pt;
+      color: var(--brand-dark);
+      margin-bottom: 1pt;
+    }
+
+    .diagram-node span {
+      font-size: 6.8pt;
+      color: var(--text-light);
+      display: block;
+    }
+
+    .diagram-arrow {
+      color: var(--brand-gold);
+      font-size: 10pt;
+      font-weight: bold;
+      padding: 0 1pt;
+    }
+
+    /* ==========================================================================
+       TABLES
+       ========================================================================== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 6pt 0;
+      font-size: 8pt;
+    }
+
+    th, td {
+      padding: 4.5pt 6.5pt;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+      line-height: 1.35;
+    }
+
+    th {
+      background: var(--surface-light);
+      color: var(--brand-dark);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 7pt;
+      letter-spacing: 0.5px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    tr:nth-child(even) td {
+      background: #fafafb;
+    }
+
+    .code-pill {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 7.2pt;
+      background: #f1f3f5;
+      padding: 1pt 3.5pt;
+      border-radius: 3pt;
+      color: #b91c1c;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* ==========================================================================
+       CODE BLOCKS
+       ========================================================================== */
+    pre {
+      background: #18191d;
+      color: #f3f4f6;
+      padding: 6pt 8pt;
+      border-radius: 4pt;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 7.4pt;
+      line-height: 1.35;
+      overflow: hidden;
+      margin: 5pt 0;
+      border-left: 2.5pt solid var(--brand-gold);
+    }
+
+    pre code {
+      color: inherit;
+    }
+
+    .keyword { color: #f472b6; font-weight: bold; }
+    .fn { color: #60a5fa; }
+    .str { color: #34d399; }
+    .comment { color: #9ca3af; font-style: italic; }
+    .num { color: #fbbf24; }
+
+    /* Footer stamp */
+    .doc-footer {
+      border-top: 1px solid var(--border-color);
+      margin-top: 6pt;
+      padding-top: 4pt;
+      display: flex;
+      justify-content: space-between;
+      font-size: 7pt;
+      color: var(--text-light);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       PAGE 1: COVER
+       ========================================================================== -->
+  <div class="page">
+    <div class="cover-container">
+      <div>
+        <div class="cover-badge">CRAZY FASHION • TECHNICAL SPECIFICATION</div>
+        <div class="cover-title-area">
+          <h1>WEBSITE WORKFLOW &amp; SYSTEM ARCHITECTURE
+            <span>End-to-End Operational Manual &amp; Code Flow</span>
+          </h1>
+          <div class="cover-divider"></div>
+          <p class="cover-subtitle">
+            An in-depth, structured explanation of the CRAZY FASHION luxury streetwear e-commerce platform. Covers the complete user journey, catalog filtering engine, reactive shopping cart state, coupon mechanics, multi-step simulated payment gateway, and client-side persistence architecture.
+          </p>
+        </div>
+
+        <div class="cover-feature-grid">
+          <div class="cover-feature-card">
+            <h4>Client-Side Engine</h4>
+            <p>Pure Vanilla ES6+ architecture with zero framework overhead. Instant DOM updates and dynamic event routing.</p>
+          </div>
+          <div class="cover-feature-card">
+            <h4>Reactive Cart &amp; Coupons</h4>
+            <p>Automated price calculations, tiered discounts, coupon validation (CRAZY50, WELCOME10), and free shipping thresholds.</p>
+          </div>
+          <div class="cover-feature-card">
+            <h4>Checkout Simulation</h4>
+            <p>Multi-step transactional pipeline supporting Cards, UPI QR scanner, and Cash on Delivery with invoice generation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cover-meta">
+        <div>
+          <strong>Application:</strong> CRAZY FASHION Web Platform<br>
+          <strong>Tech Stack:</strong> HTML5 Semantic Markup, Vanilla CSS3, Modern ES6+ JavaScript<br>
+          <strong>Data Model:</strong> Client State with LocalStorage &amp; Cross-Tab Synchronization
+        </div>
+        <div style="text-align: right;">
+          <strong>Document Version:</strong> 1.0 (Production Architecture)<br>
+          <strong>Author:</strong> Lead Full-Stack Engineering Team<br>
+          <strong>Generated:</strong> October 2026
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       PAGE 2: EXECUTIVE SUMMARY & FILE STRUCTURE
+       ========================================================================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="header-bar">
+        <h2>1. Executive Summary &amp; Architecture Map</h2>
+        <span class="section-num">SECTION 01</span>
+      </div>
+
+      <p>
+        <strong>CRAZY FASHION</strong> is a luxury streetwear e-commerce web platform engineered around the core philosophy of <em>"Where Premium Meets Affordable"</em>. Built using high-performance vanilla web standards (HTML5, Vanilla CSS3, and ES6+ JavaScript), the application delivers an app-like single-page-application (SPA) experience while retaining the SEO and multi-route strengths of traditional multi-page documents.
+      </p>
+
+      <h3>1.1 High-Level Architectural Flow</h3>
+      <p>
+        The application cleanly decouples <strong>Presentation (HTML/CSS)</strong>, <strong>State Management (JavaScript Object)</strong>, and <strong>Persistence (Browser LocalStorage)</strong>:
+      </p>
+
+      <div class="diagram-board">
+        <div class="diagram-row">
+          <div class="diagram-node gold">
+            <h5>1. USER INTERACTION</h5>
+            <span>Clicks, Searches, Modals, Forms</span>
+          </div>
+          <span class="diagram-arrow">➔</span>
+          <div class="diagram-node active">
+            <h5>2. EVENT DISPATCHER</h5>
+            <span>Event Listeners &amp; Global Handlers</span>
+          </div>
+          <span class="diagram-arrow">➔</span>
+          <div class="diagram-node">
+            <h5>3. CENTRAL STATE</h5>
+            <span>Cart, Wishlist, Filters, Sizes</span>
+          </div>
+        </div>
+        <div class="diagram-row" style="margin-top: 4.5pt;">
+          <div class="diagram-node">
+            <h5>6. UI RE-RENDER</h5>
+            <span>Badges, Cart Drawer, Invoices, Toast</span>
+          </div>
+          <span class="diagram-arrow">⬅</span>
+          <div class="diagram-node active">
+            <h5>5. LOCALSTORAGE SYNC</h5>
+            <span>JSON Serialization &amp; Storage Event</span>
+          </div>
+          <span class="diagram-arrow">⬅</span>
+          <div class="diagram-node gold">
+            <h5>4. BUSINESS LOGIC</h5>
+            <span>Coupons, Totals, Sound Synthesizer</span>
+          </div>
+        </div>
+      </div>
+
+      <h3>1.2 Workspace Directory &amp; File Responsibilities</h3>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 24%;">File / Path</th>
+            <th style="width: 19%;">Type</th>
+            <th>System Responsibility &amp; Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="code-pill">index.html</span> / <span class="code-pill">Home.html</span></td>
+            <td>Master Storefront</td>
+            <td>Primary landing page with Hero, Feature Strip, Catalog Grid, Drop Countdown, Video Lookbook, Customer Reviews, Concierge Form, and Modal dialogs.</td>
+          </tr>
+          <tr>
+            <td><span class="code-pill">categories.html</span></td>
+            <td>Filtered Route</td>
+            <td>Dedicated gallery for <strong>Artisanal Shirts</strong>. Initializes with <span class="code-pill">state.selectedCategory = 'shirts'</span> while retaining global cart and checkout modals.</td>
+          </tr>
+          <tr>
+            <td><span class="code-pill">Nextpage.html</span></td>
+            <td>Filtered Route</td>
+            <td>Dedicated gallery for <strong>Denim &amp; Trousers</strong>. Initializes with <span class="code-pill">state.selectedCategory = 'jeans'</span> with full transactional capabilities.</td>
+          </tr>
+          <tr>
+            <td><span class="code-pill">coming-soon.html</span></td>
+            <td>Teaser &amp; Pre-drop</td>
+            <td>VIP Vault Drop page with live countdown timer, 100-piece allocation status, capsule sneak peek, and early access waitlist forms.</td>
+          </tr>
+          <tr>
+            <td><span class="code-pill">script.js</span></td>
+            <td>Core Engine (53KB)</td>
+            <td>Unified controller containing catalog data, state container, search &amp; filter logic, cart computations, promo engine, simulated checkout, and Web Audio API chimes.</td>
+          </tr>
+          <tr>
+            <td><span class="code-pill">style.css</span></td>
+            <td>Design System (75KB)</td>
+            <td>CSS custom properties system (Colors, Glassmorphism, Breakpoints, Animations, Drawer slide-outs, Radar scanner, and Print Invoice rules).</td>
+          </tr>
+          <tr>
+            <td><span class="code-pill">ads.mp4</span></td>
+            <td>Media Asset</td>
+            <td>Cinematic lookbook video campaign looping seamlessly with audio mute/unmute control.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-box gold">
+        <h4>System Design Note: Zero-Dependency Architecture</h4>
+        <p>
+          The entire application functions natively in modern web browsers without requiring bundlers, node servers, or external framework runtimes. This guarantees sub-millisecond interaction speeds and offline-compatible client storage.
+        </p>
+      </div>
+    </div>
+
+    <div class="doc-footer">
+      <span>CRAZY FASHION Architectural Specification</span>
+      <span>Section 1: Executive Overview</span>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       PAGE 3: THE END-TO-END USER JOURNEY FLOW
+       ========================================================================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="header-bar">
+        <h2>2. End-to-End User Journey Workflow</h2>
+        <span class="section-num">SECTION 02</span>
+      </div>
+
+      <p>
+        The customer journey within CRAZY FASHION follows a friction-free 7-phase e-commerce funnel designed to guide visitors from product discovery to secure simulated order placement:
+      </p>
+
+      <div class="flow-steps">
+        <div class="flow-step-item">
+          <div class="flow-step-num">1</div>
+          <div class="flow-step-content">
+            <h4>Discovery &amp; Announcement Awareness</h4>
+            <p>
+              The visitor lands on <span class="code-pill">index.html</span>. The top marquee bar flashes promo code <strong>CRAZY50</strong> (50% OFF) and displays a synchronized countdown clock to the upcoming capsule drop. The Hero section highlights brand value metrics (15K+ Stylists, 4.9★ rating, 100% Pure Cotton) alongside direct CTA links.
+            </p>
+            <span class="flow-step-badge">Marquee Bar • Hero CTA • Live Drop Clock</span>
+          </div>
+        </div>
+
+        <div class="flow-step-item">
+          <div class="flow-step-num">2</div>
+          <div class="flow-step-content">
+            <h4>Interactive Catalog Exploration &amp; Real-Time Search</h4>
+            <p>
+              Users browse products using three concurrent mechanisms: (a) Category Pills (All, Shirts, Denim, T-Shirts), (b) Search input with instant autocomplete suggestions and live count badges, or (c) Sorting by Price (Low/High) and Top Customer Rated. The DOM updates dynamically without full-page reloads.
+            </p>
+            <span class="flow-step-badge">DOM Filter Pipeline • Search Autocomplete • Live Badge Counters</span>
+          </div>
+        </div>
+
+        <div class="flow-step-item">
+          <div class="flow-step-num">3</div>
+          <div class="flow-step-content">
+            <h4>Garment Inspection, Sizing &amp; Wishlisting</h4>
+            <p>
+              Each product card exposes active size buttons (S, M, L, XL or 30, 32, 34, 36). Clicking "Quick View" opens a modal with high-resolution imagery, MRP savings percentages, and garment fabric descriptions. Clicking the heart icon toggles the item in the user's Wishlist, immediately updating the top navigation counter badge.
+            </p>
+            <span class="flow-step-badge">Quick View Modal • Size Selector • Reactive Wishlist Toggle</span>
+          </div>
+        </div>
+
+        <div class="flow-step-item">
+          <div class="flow-step-num">4</div>
+          <div class="flow-step-content">
+            <h4>Cart Aggregation &amp; Audio Feedback</h4>
+            <p>
+              Clicking "Add to Cart" pushes the selected product ID and chosen size into the cart array. The Web Audio API synthesizes an affirmative high-frequency chime (D5 to A5), a floating toast appears, and the top bag counter animates. Clicking "Buy Now" adds the product and immediately slides out the cart drawer.
+            </p>
+            <span class="flow-step-badge">Web Audio Chime • Slide-Out Drawer • Toast Notification</span>
+          </div>
+        </div>
+
+        <div class="flow-step-item">
+          <div class="flow-step-num">5</div>
+          <div class="flow-step-content">
+            <h4>Cart Adjustments, Coupon Validation &amp; Shipping Calculation</h4>
+            <p>
+              Inside the slide-out drawer, customers can increment/decrement quantities or remove items. Entering coupons like <strong>CRAZY50</strong> deducts 50% from the subtotal. Orders above ₹999 automatically trigger Free Delivery (saving ₹99). The grand total recalculates instantly.
+            </p>
+            <span class="flow-step-badge">Promo Engine (CRAZY50) • Threshold Free Shipping • Live Recalculation</span>
+          </div>
+        </div>
+
+        <div class="flow-step-item">
+          <div class="flow-step-num">6</div>
+          <div class="flow-step-content">
+            <h4>Checkout Modal &amp; Multi-Payment Gateway Selection</h4>
+            <p>
+              Clicking "Proceed to Checkout" closes the drawer and displays the 3-step Secure Transaction modal. Customers input delivery information (Name, Phone, Address, PIN) and choose between: (1) Credit/Debit Cards, (2) UPI / QR Code instant scan, or (3) Cash on Delivery (COD).
+            </p>
+            <span class="flow-step-badge">Form Validation • Dynamic Payment Sub-fields (Cards/UPI/COD)</span>
+          </div>
+        </div>
+
+        <div class="flow-step-item">
+          <div class="flow-step-num">7</div>
+          <div class="flow-step-content">
+            <h4>Transaction Radar Processing &amp; Order Invoice Generation</h4>
+            <p>
+              Submitting the form activates a pulsing radar scanner screen simulating bank encryption (2.2s delay). Upon completion, a harmonic success chord (C5-E5-G5-C6) sounds, the cart clears, and a receipt displays with a randomized order ID (e.g., <strong>#CF-849201</strong>) and a "Print Invoice" trigger.
+            </p>
+            <span class="flow-step-badge">Radar Animation • Order ID Generator • Printable Invoice Receipt</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="doc-footer">
+      <span>CRAZY FASHION Architectural Specification</span>
+      <span>Section 2: Customer Funnel &amp; User Flow</span>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       PAGE 4: TECHNICAL ARCHITECTURE & STATE MANAGEMENT
+       ========================================================================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="header-bar">
+        <h2>3. Technical State Engine &amp; Data Pipeline</h2>
+        <span class="section-num">SECTION 03</span>
+      </div>
+
+      <p>
+        The website operates on a centralized reactive state model defined in <span class="code-pill">script.js</span>. Every user interaction modifies the <span class="code-pill">state</span> object, which triggers targeted UI render cycles and persists changes to browser storage:
+      </p>
+
+      <h3>3.1 Central State Data Schema</h3>
+      <pre><code><span class="keyword">const</span> state = {
+  cart: JSON.parse(localStorage.getItem(<span class="str">"crazy_cart"</span>) || <span class="str">"[]"</span>),         <span class="comment">// [{ productId: 1, size: "M", qty: 2 }]</span>
+  wishlist: JSON.parse(localStorage.getItem(<span class="str">"crazy_wishlist"</span>) || <span class="str">"[]"</span>), <span class="comment">// Product IDs: [1, 7, 10]</span>
+  selectedCategory: <span class="str">"all"</span>,     <span class="comment">// 'all' | 'shirts' | 'jeans' | 'tshirts'</span>
+  searchQuery: <span class="str">""</span>,             <span class="comment">// Real-time typed keyword</span>
+  sortBy: <span class="str">"featured"</span>,          <span class="comment">// 'featured' | 'price-asc' | 'price-desc' | 'rating'</span>
+  activeCoupon: <span class="keyword">null</span>,          <span class="comment">// null | { code: 'CRAZY50', discount: 0.50 }</span>
+  coupons: {
+    CRAZY50: <span class="num">0.50</span>,             <span class="comment">// 50% discount</span>
+    WELCOME10: <span class="num">0.10</span>,           <span class="comment">// 10% discount</span>
+    FREESHIP: <span class="str">"free_shipping"</span>  <span class="comment">// Delivery fee waiver</span>
+  },
+  selectedSizes: {}            <span class="comment">// Map of productId -&gt; chosen size string</span>
+};</code></pre>
+
+      <h3>3.2 LocalStorage Persistence Keys</h3>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 25%;">Storage Key</th>
+            <th style="width: 18%;">Data Type</th>
+            <th>Lifecycle &amp; Persistence Behavior</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="code-pill">crazy_cart</span></td>
+            <td>JSON Array</td>
+            <td>Persists customer shopping cart items across page refreshes, tab closures, and multi-page routing (<span class="code-pill">index.html</span> ↔ <span class="code-pill">categories.html</span> ↔ <span class="code-pill">Nextpage.html</span>).</td>
+          </tr>
+          <tr>
+            <td><span class="code-pill">crazy_wishlist</span></td>
+            <td>JSON Array</td>
+            <td>Stores product IDs flagged as favorites by the user. Synced across all active browser tabs via the window <span class="code-pill">storage</span> listener.</td>
+          </tr>
+          <tr>
+            <td><span class="code-pill">crazy_drop_target_time</span></td>
+            <td>Unix Timestamp</td>
+            <td>Dynamic rolling launch date for the capsule drop countdown clock (maintains exactly 4 days, 18 hours from initial site entry).</td>
+          </tr>
+          <tr>
+            <td><span class="code-pill">crazy_drop_waitlist</span></td>
+            <td>JSON Array</td>
+            <td>Logs customer VIP waitlist entries (Name, Email, Target Drop Garment, Timestamp) directly into client storage.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>3.3 Cross-Tab State Synchronization</h3>
+      <p>
+        If a customer opens the store in multiple browser tabs simultaneously (for example, browsing shirts on tab 1 while inspecting denims on tab 2), state remains unified in real-time through the window storage event listener:
+      </p>
+      <pre><code>window.addEventListener(<span class="str">"storage"</span>, (e) => {
+  <span class="keyword">if</span> (e.key === <span class="str">"crazy_cart"</span>) {
+    state.cart = JSON.parse(e.newValue || <span class="str">"[]"</span>);
+    updateBadges(); renderCartDrawer();
+  } <span class="keyword">else if</span> (e.key === <span class="str">"crazy_wishlist"</span>) {
+    state.wishlist = JSON.parse(e.newValue || <span class="str">"[]"</span>);
+    updateBadges(); renderProducts();
+  }
+});</code></pre>
+
+      <div class="callout-box green">
+        <h4>Performance Advantage</h4>
+        <p>
+          By isolating data mutations inside pure JavaScript functions and storing serializable state in LocalStorage, page transitions are instantaneous without requiring backend session re-validation.
+        </p>
+      </div>
+    </div>
+
+    <div class="doc-footer">
+      <span>CRAZY FASHION Architectural Specification</span>
+      <span>Section 3: State &amp; Storage Architecture</span>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       PAGE 5: SUBSYSTEM BREAKDOWNS (CATALOG, CART, COUPONS)
+       ========================================================================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="header-bar">
+        <h2>4. Functional Subsystems &amp; Core Logic</h2>
+        <span class="section-num">SECTION 04</span>
+      </div>
+
+      <h3>4.1 Product Catalog &amp; Filter Pipeline</h3>
+      <p>
+        The product engine maintains an array of 12 luxury garments. Filtering is executed through a functional pipeline:
+      </p>
+      <div class="diagram-board">
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <h5>RAW CATALOG (12 Items)</h5>
+            <span>Shirts, Denim, T-Shirts</span>
+          </div>
+          <span class="diagram-arrow">➔</span>
+          <div class="diagram-node active">
+            <h5>CATEGORY FILTER</h5>
+            <span>Match category or 'all'</span>
+          </div>
+          <span class="diagram-arrow">➔</span>
+          <div class="diagram-node active">
+            <h5>TEXT SEARCH FILTER</h5>
+            <span>Matches Name, Cat, Desc</span>
+          </div>
+          <span class="diagram-arrow">➔</span>
+          <div class="diagram-node gold">
+            <h5>SORT COMPARATOR</h5>
+            <span>Price ASC/DESC or Rating</span>
+          </div>
+        </div>
+      </div>
+
+      <h3>4.2 Price Calculation &amp; Free Shipping Formula</h3>
+      <p>
+        Every time the cart contents change, <span class="code-pill">getCartCalculations()</span> evaluates the financials:
+      </p>
+      <pre><code><span class="keyword">function</span> <span class="fn">getCartCalculations</span>() {
+  <span class="keyword">let</span> subtotal = state.cart.reduce((sum, item) => {
+    <span class="keyword">const</span> product = PRODUCTS.find(p => p.id === item.productId);
+    <span class="keyword">return</span> sum + (product ? product.price * item.qty : <span class="num">0</span>);
+  }, <span class="num">0</span>);
+
+  <span class="keyword">let</span> discount = <span class="num">0</span>;
+  <span class="keyword">if</span> (state.activeCoupon && <span class="keyword">typeof</span> state.activeCoupon.discount === <span class="str">"number"</span>) {
+    discount = Math.round(subtotal * state.activeCoupon.discount);
+  }
+
+  <span class="comment">// Orders > ₹999 get free delivery; else ₹99 fee</span>
+  <span class="keyword">const</span> shipping = (subtotal > <span class="num">999</span> || state.activeCoupon?.code === <span class="str">"FREESHIP"</span> || subtotal === <span class="num">0</span>) ? <span class="num">0</span> : <span class="num">99</span>;
+  <span class="keyword">const</span> grandTotal = Math.max(<span class="num">0</span>, subtotal - discount + shipping);
+
+  <span class="keyword">return</span> { subtotal, discount, shipping, grandTotal };
+}</code></pre>
+
+      <h3>4.3 Promo Code Matrix</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Coupon Code</th>
+            <th>Discount Type</th>
+            <th>Business Condition</th>
+            <th>Example Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color: var(--brand-primary);">CRAZY50</strong></td>
+            <td>Flat 50% Off</td>
+            <td>Applies to entire cart subtotal</td>
+            <td>Subtotal ₹1,000 ➔ <strong>-₹500 Discount</strong></td>
+          </tr>
+          <tr>
+            <td><strong style="color: var(--brand-primary);">WELCOME10</strong></td>
+            <td>Flat 10% Off</td>
+            <td>Applies to new user orders</td>
+            <td>Subtotal ₹1,000 ➔ <strong>-₹100 Discount</strong></td>
+          </tr>
+          <tr>
+            <td><strong style="color: var(--brand-primary);">FREESHIP</strong></td>
+            <td>Shipping Waiver</td>
+            <td>Waives ₹99 delivery fee unconditionally</td>
+            <td>Delivery ₹99 ➔ <strong>FREE (₹0)</strong></td>
+          </tr>
+          <tr>
+            <td><strong style="color: var(--brand-primary);">SECRET10</strong></td>
+            <td>10% Vault Code</td>
+            <td>Granted upon VIP Capsule Drop registration</td>
+            <td>VIP early pass incentive</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>4.4 Web Audio API Chime Synthesizer</h3>
+      <p>
+        Instead of loading heavy MP3 audio files over the network, CRAZY FASHION uses the browser's native <strong>Web Audio API</strong> to synthesize pleasant haptic audio tones programmatically:
+      </p>
+      <div class="grid-2">
+        <div class="callout-box">
+          <h4>Cart Action Chime (Dual Tone)</h4>
+          <p>Oscillates from D5 (587.33 Hz) to A5 (880.00 Hz) over 250ms with exponential gain fade-out to signal item addition.</p>
+        </div>
+        <div class="callout-box green">
+          <h4>Order Success Chime (Major Arpeggio)</h4>
+          <p>Plays a 4-note ascending chord: C5 (523 Hz) ➔ E5 (659 Hz) ➔ G5 (783 Hz) ➔ C6 (1046 Hz) to celebrate completed purchases.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="doc-footer">
+      <span>CRAZY FASHION Architectural Specification</span>
+      <span>Section 4: Core Subsystems</span>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       PAGE 6: CHECKOUT GATEWAY SIMULATOR & DROP COUNTDOWN
+       ========================================================================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="header-bar">
+        <h2>5. Checkout Simulation &amp; VIP Drop Engine</h2>
+        <span class="section-num">SECTION 05</span>
+      </div>
+
+      <h3>5.1 Multi-Payment Simulated Transaction Flow</h3>
+      <p>
+        The checkout gateway in <span class="code-pill">index.html</span> and <span class="code-pill">categories.html</span> simulates an enterprise payment gateway experience with three distinct payment rails:
+      </p>
+
+      <div class="flow-steps">
+        <div class="flow-step-item">
+          <div class="flow-step-num">A</div>
+          <div class="flow-step-content">
+            <h4>Credit / Debit Card Rail</h4>
+            <p>
+              Provides input fields for 16-digit Card Number, MM/YY Expiry, and CVV with masked formatters. Pre-filled with a testing sandbox credential for instant user evaluation.
+            </p>
+          </div>
+        </div>
+        <div class="flow-step-item">
+          <div class="flow-step-num">B</div>
+          <div class="flow-step-content">
+            <h4>UPI / QR Code Rail</h4>
+            <p>
+              Accepts Virtual Payment Addresses (VPA) and displays a simulated Dynamic QR Code for scanning via GPay, PhonePe, or Paytm with instant verification badges.
+            </p>
+          </div>
+        </div>
+        <div class="flow-step-item">
+          <div class="flow-step-num">C</div>
+          <div class="flow-step-content">
+            <h4>Cash on Delivery (COD) Rail</h4>
+            <p>
+              Enables instant one-click door delivery verification without electronic payment requirements.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <h3>5.2 Transaction State Transition Diagram</h3>
+      <div class="diagram-board">
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <h5>STATE 1: FORM INPUT</h5>
+            <span>Address &amp; Payment Details</span>
+          </div>
+          <span class="diagram-arrow">➔</span>
+          <div class="diagram-node active">
+            <h5>STATE 2: RADAR PROCESSING</h5>
+            <span>2.2s Animated Pulsing Scanner</span>
+          </div>
+          <span class="diagram-arrow">➔</span>
+          <div class="diagram-node green">
+            <h5>STATE 3: CONFIRMATION</h5>
+            <span>Invoice, #CF-ID, Print Action</span>
+          </div>
+        </div>
+      </div>
+
+      <h3>5.3 The 2026 VIP Vault Countdown System</h3>
+      <p>
+        Located on both <span class="code-pill">index.html#ComingSoon</span> and <span class="code-pill">coming-soon.html</span>, the countdown engine drives anticipation for limited-edition garment drops:
+      </p>
+
+      <div class="grid-2">
+        <div class="stat-card">
+          <span class="stat-value">04d : 18h : 45m</span>
+          <span class="stat-label">Synchronized Precision Timer</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">86% RESERVED</span>
+          <span class="stat-label">14 VIP Spots Remaining</span>
+        </div>
+      </div>
+
+      <table style="margin-top: 6pt;">
+        <thead>
+          <tr>
+            <th>Upcoming Drop Piece</th>
+            <th>Category</th>
+            <th>Drop Price</th>
+            <th>Craftsmanship Highlights</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Crazy Fashion Varsity Jacket</strong></td>
+            <td>Outerwear</td>
+            <td>₹1,499 (MRP ₹2,499)</td>
+            <td>Heavy maroon wool, cowhide leather sleeves, brass snaps, serial-numbered tag.</td>
+          </tr>
+          <tr>
+            <td><strong>Tokyo Monogram Resort Shirt</strong></td>
+            <td>Artisanal Shirts</td>
+            <td>₹899 (MRP ₹1,299)</td>
+            <td>Silk-cotton blend, geometric monogram weave, mother-of-pearl buttons.</td>
+          </tr>
+          <tr>
+            <td><strong>Japanese Raw Selvedge Wide Denim</strong></td>
+            <td>Denim &amp; Trousers</td>
+            <td>₹1,299 (MRP ₹1,999)</td>
+            <td>14.5oz shuttle-loom raw selvedge, red-line ID, architectural wide drape.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-box">
+        <h4>VIP Waitlist Mechanics</h4>
+        <p>
+          Clicking <strong>"Notify Me"</strong> on any capsule item opens the registration modal. Submitting the form saves the entry to <span class="code-pill">crazy_drop_waitlist</span> in LocalStorage, alters the card button to a checked <em>"VIP Waitlisted"</em> badge, and grants promo code <strong>SECRET10</strong>.
+        </p>
+      </div>
+    </div>
+
+    <div class="doc-footer">
+      <span>CRAZY FASHION Architectural Specification</span>
+      <span>Section 5: Checkout &amp; Drop Mechanics</span>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       PAGE 7: QUALITY ASSURANCE & FEATURE VERIFICATION GUIDE
+       ========================================================================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="header-bar">
+        <h2>6. Testing, Verification &amp; Feature Checklist</h2>
+        <span class="section-num">SECTION 06</span>
+      </div>
+
+      <p>
+        To verify that all components of the CRAZY FASHION web platform are operating correctly, use the following operational checklist:
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 24%;">Feature Module</th>
+            <th style="width: 44%;">Step-by-Step Test Procedure</th>
+            <th style="width: 32%;">Expected System Response</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Category Filtering</strong></td>
+            <td>Click "Artisanal Shirts" or select "Jeans" from dropdown or pills.</td>
+            <td>Grid displays only matching garments. Active pill highlights and counts sync.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Real-Time Search</strong></td>
+            <td>Type "floral" or "denim" into header search input.</td>
+            <td>Autocomplete dropdown pops up with thumbnail links and matching counts.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Size Selection</strong></td>
+            <td>Click different size chips ("XL" or "34") on any product card.</td>
+            <td>Selected size turns maroon/black with active state and binds to cart payload.</td>
+          </tr>
+          <tr>
+            <td><strong>4. Quick View Modal</strong></td>
+            <td>Click the eye icon overlay on any garment thumbnail.</td>
+            <td>Modal opens with detailed description, photo, and quick "Add to Cart" button.</td>
+          </tr>
+          <tr>
+            <td><strong>5. Wishlist Storage</strong></td>
+            <td>Click heart icon on any product card.</td>
+            <td>Heart fills red, badge count increments, and entry saves in <span class="code-pill">crazy_wishlist</span>.</td>
+          </tr>
+          <tr>
+            <td><strong>6. Audio Chime &amp; Cart</strong></td>
+            <td>Click "Add to Cart" on any item.</td>
+            <td>Synthesizer plays D5-A5 chime, top bag counter bounces, and toast popup appears.</td>
+          </tr>
+          <tr>
+            <td><strong>7. Promo Code CRAZY50</strong></td>
+            <td>Open cart drawer, type <span class="code-pill">CRAZY50</span>, and click Apply.</td>
+            <td>A green discount line appears deducting 50% from the subtotal.</td>
+          </tr>
+          <tr>
+            <td><strong>8. Free Delivery Rule</strong></td>
+            <td>Add items until the subtotal exceeds ₹999.</td>
+            <td>Delivery fee flips from ₹99 to <strong>FREE</strong> automatically.</td>
+          </tr>
+          <tr>
+            <td><strong>9. Radar &amp; Invoice</strong></td>
+            <td>Click "Proceed to Checkout", fill name/phone, and submit.</td>
+            <td>Pulsing radar activates for 2.2s, success chord plays, and printable receipt displays.</td>
+          </tr>
+          <tr>
+            <td><strong>10. Cross-Page Routing</strong></td>
+            <td>Navigate from <span class="code-pill">index.html</span> to <span class="code-pill">categories.html</span>.</td>
+            <td>Cart items and badges remain identical across pages via LocalStorage sync.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-box gold" style="margin-top: 10pt;">
+        <h4>Summary &amp; Project Conclusion</h4>
+        <p>
+          The CRAZY FASHION web platform successfully blends high-fashion visual aesthetics with modern, modular vanilla JavaScript engineering. By leveraging clean state machines, hardware-accelerated CSS animations, and native browser APIs, the application delivers a commercial-grade shopping experience that is fast, resilient, and effortless to navigate.
+        </p>
+      </div>
+    </div>
+
+    <div class="doc-footer">
+      <span>CRAZY FASHION Architectural Specification</span>
+      <span>Section 6: Testing &amp; Verification Guide</span>
+    </div>
+  </div>
+
+</body>
+</html>
